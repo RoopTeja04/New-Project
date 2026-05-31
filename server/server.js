@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const session = require("express-session");
+const UserRoutes = require("./Routes/UserRoutes");
+const InvitationRouter = require("./Routes/InvitationRoutes");
 const MongoStore = require("connect-mongo").default;
 
 dotenv.config();
@@ -44,6 +46,9 @@ mongoose
 app.get("/", (req, res) => {
   return res.status(200).json({ message: "server started running" });
 });
+
+app.use("/user", UserRoutes);
+app.use("/invite", InvitationRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);
