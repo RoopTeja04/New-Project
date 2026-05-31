@@ -19,7 +19,7 @@ const ProjectSchema = new mongoose.Schema(
       required: true,
     },
     techStack: {
-      type: String,
+      type: [String],
       required: true,
     },
     projectLink: {

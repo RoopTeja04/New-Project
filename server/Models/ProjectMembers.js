@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 
 const ProjectMembersSchema = new mongoose.Schema(
   {
-    project_id: {
+    projectID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Projects",
       required: true,
     },
-    user_id: {
+    userID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -21,10 +21,10 @@ const ProjectMembersSchema = new mongoose.Schema(
         "Business Analyst",
         "Spectator",
       ],
-      required,
+      required: true,
     },
   },
   { timestamps: true },
 );
 
-module.exports = mongoose.model("ProjectMember", projectMemberSchema);
+module.exports = mongoose.model("ProjectMember", ProjectMembersSchema);

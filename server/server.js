@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const session = require("express-session");
 const UserRoutes = require("./Routes/UserRoutes");
 const InvitationRouter = require("./Routes/InvitationRoutes");
+const ProjectRouter = require("./Routes/ProjectRoutes");
 const MongoStore = require("connect-mongo").default;
 
 dotenv.config();
@@ -49,6 +50,7 @@ app.get("/", (req, res) => {
 
 app.use("/user", UserRoutes);
 app.use("/invite", InvitationRouter);
+app.use("/project", ProjectRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);
