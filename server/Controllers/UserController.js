@@ -17,12 +17,12 @@ exports.CreateAccount = async (req, res) => {
   try {
     const FindEmail = await User.findOne({ email });
 
-    if (!FindEmail)
+    if (FindEmail)
       return res.status(401).json({ message: "Email already Exists!" });
 
     const FindCompany = await Company.findOne({ companyName });
 
-    if (!FindCompany)
+    if (FindCompany)
       return res.status(401).json({ message: "Company Name Already Exists!" });
 
     const hashPassword = await bcrypt.hash(password, 10);

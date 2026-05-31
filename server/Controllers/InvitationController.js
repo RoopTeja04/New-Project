@@ -96,7 +96,7 @@ exports.invitationRequest = async (req, res) => {
         .json({ message: `Invitation ${status}ed Successfully` });
     }
 
-    await FindInvite.updateOne({ status });
+    await FindInvite.updateOne({ status, token: null });
 
     return res
       .status(200)
