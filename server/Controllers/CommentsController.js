@@ -33,15 +33,38 @@ exports.DeleteComment = async (req, res) => {
   const { commentID } = req.params;
 
   try {
-
     const FindComment = await Comments.findById(commentID);
 
-    if(!FindComment)
+    if (!FindComment)
       return res.status(400).json({ message: "Comment Not Found" });
 
     await Comments.findByIdAndDelete(commentID);
 
-    return res.status(200).json({ message: "Comment Deleted Successfully" })
+    return res.status(200).json({ message: "Comment Deleted Successfully" });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};
+
+exports.GetComments = async (req, res) => {
+  const { taskID } = req.params;
+
+  try {
+    const FindCommnets = await Comments.find({ taskID });
+
+    if (!FindCommnets)
+      return res
+        .status(400)
+        .json({ message: "No Comments Found", Count: FindCommnets.length });
+
+    return res.status(200).json({
+      message: "Comments Found",
+      Comments: FindCommnets,
+      Count: FindComments.length,
+    });
   } catch (err) {
     return res.status(500).json({
       message: "Internal Server Error",
