@@ -8,6 +8,9 @@ const InvitationRouter = require("./Routes/InvitationRoutes");
 const ProjectRouter = require("./Routes/ProjectRoutes");
 const ColumnsRouter = require("./Routes/ColumnsRoute");
 const ProjectMemberRouter = require("./Routes/ProjectMemeberRoutes");
+const TaskRoutes = require("./Routes/TaskRoutes");
+const CommentRoutes = require("./Routes/CommentRoutes");
+const ActivityLogsRoutes = require("./Routes/ActivityLogsRoutes");
 const MongoStore = require("connect-mongo").default;
 
 dotenv.config();
@@ -55,6 +58,9 @@ app.use("/invite", InvitationRouter);
 app.use("/project", ProjectRouter);
 app.use("/column", ColumnsRouter);
 app.use("/project-member", ProjectMemberRouter);
+app.use("/task", TaskRoutes);
+app.use("/comment", CommentRoutes);
+app.use("/activity-log", ActivityLogsRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);

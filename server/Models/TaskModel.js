@@ -25,12 +25,13 @@ const taskSchema = new mongoose.Schema(
       enum: ["LOW", "MEDIUM", "HIGH"],
       default: "MEDIUM",
     },
-    status: {
-      type: String,
-    },
+    // status: {
+    //   type: String,
+    // },
     assigneedID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     createdUser: {
       type: mongoose.Schema.Types.ObjectId,
