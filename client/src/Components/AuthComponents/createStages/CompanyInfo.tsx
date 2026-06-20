@@ -57,7 +57,7 @@ const CompanyInfo = ({ setStage, stage, Data, setData }: any) => {
   return (
     <div className="flex-1 w-full my-2 space-y-5 pr-20">
       <Messages ref={msgs} />
-      {/* {isSubmitting && ( */}
+      {isSubmitting && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm h-full">
           <div className="bg-white/90 backdrop-blur-xl  shadow-2xl rounded-2xl w-full max-w-md">
             {!isSuccess ? (
@@ -137,7 +137,7 @@ const CompanyInfo = ({ setStage, stage, Data, setData }: any) => {
             )}
           </div>
         </div>
-      {/* )} */}
+      )} 
       <div className="flex flex-col space-y-2 w-full">
         <label className="font-bold text-gray-700">Website</label>
         <div className="relative">
