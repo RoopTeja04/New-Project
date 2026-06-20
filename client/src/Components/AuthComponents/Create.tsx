@@ -4,7 +4,7 @@ import CompanyDetails from "./createStages/CompanyDetails";
 import CompanyInfo from "./createStages/CompanyInfo";
 
 const Create = () => {
-  const [stage, setStage] = React.useState<Number>(2);
+  const [stage, setStage] = React.useState<Number>(0);
 
   const CompanyData = {
     name: "",

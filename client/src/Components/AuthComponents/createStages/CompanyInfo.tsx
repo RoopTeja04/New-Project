@@ -13,6 +13,8 @@ const CompanyInfo = ({ setStage, stage, Data, setData }: any) => {
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
 
+  const websiteRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
+
   const handleSubmitBtn = async () => {
     if (!Data.website && !Data.designation) {
       setError("all");
@@ -22,8 +24,19 @@ const CompanyInfo = ({ setStage, stage, Data, setData }: any) => {
       setError("website");
       return;
     }
-    if (!Data.designation) {
+
+    if (!websiteRegex.test(Data.website.trim())) {
+      setError("invalidWebsite");
+      return;
+    }
+
+    if (!Data.designation.trim()) {
       setError("designation");
+      return;
+    }
+
+    if (Data.designation.trim().length < 2) {
+      setError("designationLength");
       return;
     }
 
@@ -48,7 +61,6 @@ const CompanyInfo = ({ setStage, stage, Data, setData }: any) => {
         "Something went wrong. Please try again later!";
       msgs.current?.show({
         severity: "error",
-        summary: "Error",
         detail: backendError,
       });
     }
@@ -90,7 +102,9 @@ const CompanyInfo = ({ setStage, stage, Data, setData }: any) => {
 
                   <div className="flex items-center gap-3">
                     <i className="pi pi-spinner pi-spin text-blue-500 text-lg"></i>
-                    <span className="text-gray-700">Setting Up Workspace...</span>
+                    <span className="text-gray-700">
+                      Setting Up Workspace...
+                    </span>
                   </div>
                 </div>
 
@@ -137,7 +151,7 @@ const CompanyInfo = ({ setStage, stage, Data, setData }: any) => {
             )}
           </div>
         </div>
-      )} 
+      )}
       <div className="flex flex-col space-y-2 w-full">
         <label className="font-bold text-gray-700">Website</label>
         <div className="relative">
@@ -156,6 +170,11 @@ const CompanyInfo = ({ setStage, stage, Data, setData }: any) => {
         {(error === "website" || error === "all") && (
           <p className="text-red-500 font-medium text-sm">
             Website is required
+          </p>
+        )}
+        {error === "invalidWebsite" && (
+          <p className="text-red-500 font-medium text-sm">
+            Please enter a valid website URL
           </p>
         )}
       </div>
@@ -178,6 +197,11 @@ const CompanyInfo = ({ setStage, stage, Data, setData }: any) => {
         {(error === "designation" || error === "all") && (
           <p className="text-red-500 font-medium text-sm">
             Designation is required
+          </p>
+        )}
+        {error === "designationLength" && (
+          <p className="text-red-500 font-medium text-sm">
+            Designation must be at least 2 characters long
           </p>
         )}
       </div>

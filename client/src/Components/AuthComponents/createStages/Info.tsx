@@ -7,31 +7,44 @@ import {
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Info = ({ setStage, stage, Data, setData }: any) => {
-
   const [visible, setVisible] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>("");
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const handleNextBtn = () => {
-    if(!Data.name && !Data.email && !Data.password){
+    if (!Data.name && !Data.email && !Data.password) {
       setError("all");
       return;
     }
-    if(!Data.name){
+    if (!Data.name.trim()) {
       setError("name");
       return;
     }
-    if(!Data.email){
+    if (Data.name.trim().length <= 3) {
+      setError("nameLength");
+      return;
+    }
+    if (!Data.email.trim()) {
       setError("email");
       return;
     }
-    if(!Data.password){
+    if (!emailRegex.test(Data.email)) {
+      setError("invalidEmail");
+      return;
+    }
+    if (!Data.password.trim()) {
       setError("password");
+      return;
+    }
+    if (Data.password.length < 6) {
+      setError("passwordLength");
       return;
     }
 
     setError("");
     setStage(stage + 1);
-  }
+  };
 
   return (
     <div className="flex-1 w-full my-2 space-y-4 pr-20">
@@ -50,7 +63,16 @@ const Info = ({ setStage, stage, Data, setData }: any) => {
           />
           <MdOutlinePersonOutline className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xl" />
         </div>
-        {(error === "name" || error === "all") && <p className="text-red-500 font-medium text-sm">Full Name is required</p>}
+        {(error === "name" || error === "all") && (
+          <p className="text-red-500 font-medium text-sm">
+            Full Name is required
+          </p>
+        )}
+        {error === "nameLength" && (
+          <p className="text-red-500 font-medium text-sm">
+            Name should be at least 3 characters long
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col space-y-1.5 w-full">
@@ -64,11 +86,23 @@ const Info = ({ setStage, stage, Data, setData }: any) => {
             onChange={(e) => {
               setData({ ...Data, email: e.target.value });
               if (error === "email" || error === "all") setError("");
+              if (emailRegex.test(Data.email)) {
+                setError("");
+              }
             }}
           />
           <MdOutlineMail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xl" />
         </div>
-        {(error === "email" || error === "all") && <p className="text-red-500 font-medium text-sm">Email Address is required</p>}
+        {(error === "email" || error === "all") && (
+          <p className="text-red-500 font-medium text-sm">
+            Email Address is required
+          </p>
+        )}
+        {error === "invalidEmail" && (
+          <p className="text-red-500 font-medium text-sm">
+            Please enter a valid email address
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col space-y-1.5 w-full">
@@ -97,7 +131,16 @@ const Info = ({ setStage, stage, Data, setData }: any) => {
             />
           )}
         </div>
-        {(error === "password" || error === "all") && <p className="text-red-500 font-medium text-sm">Password is required</p>}
+        {(error === "password" || error === "all") && (
+          <p className="text-red-500 font-medium text-sm">
+            Password is required
+          </p>
+        )}
+        {error === "passwordLength" && (
+          <p className="text-red-500 font-medium text-sm">
+            Password must be at least 6 characters long
+          </p>
+        )}
       </div>
 
       <div className="w-full flex justify-end mt-7">
