@@ -9,12 +9,23 @@ const CompanyDetails = ({ setStage, stage, Data, setData }: any) => {
       setError("all");
       return;
     }
-    if (!Data.companyName) {
+    if (!Data.companyName.trim()) {
       setError("companyName");
       return;
     }
-    if (!Data.description) {
+
+    if (Data.companyName.trim().length < 3) {
+      setError("companyNameLength");
+      return;
+    }
+
+    if (!Data.description.trim()) {
       setError("description");
+      return;
+    }
+
+    if (Data.description.trim().length < 20) {
+      setError("descriptionLength");
       return;
     }
 
@@ -39,7 +50,16 @@ const CompanyDetails = ({ setStage, stage, Data, setData }: any) => {
           />
           <MdBusiness className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xl" />
         </div>
-        {(error === "companyName" || error === "all") && <p className="text-red-500 font-medium text-sm">Company Name is required</p>}
+        {(error === "companyName" || error === "all") && (
+          <p className="text-red-500 font-medium text-sm">
+            Company Name is required
+          </p>
+        )}
+        {error === "companyNameLength" && (
+          <p className="text-red-500 font-medium text-sm">
+            Company Name must be at least 3 characters long
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col space-y-2 w-full">
@@ -56,7 +76,16 @@ const CompanyDetails = ({ setStage, stage, Data, setData }: any) => {
             }}
           />
         </div>
-        {(error === "description" || error === "all") && <p className="text-red-500 font-medium text-sm">Description is required</p>}
+        {(error === "description" || error === "all") && (
+          <p className="text-red-500 font-medium text-sm">
+            Description is required
+          </p>
+        )}
+        {error === "descriptionLength" && (
+          <p className="text-red-500 font-medium text-sm">
+            Description must be at least 20 characters long
+          </p>
+        )}
       </div>
 
       <div className="flex items-center justify-between mt-7">
