@@ -1,7 +1,7 @@
 const express = require("express");
+const { GetCompany } = require("../Controllers/CompanyController");
 
 const CompanyRouter = express.Router();
-const { GetCompany } = require("../Controllers/CompanyController");
 
 CompanyRouter.get("/:id", GetCompany);
 

@@ -17,8 +17,6 @@ const Layout = () => {
     }
   }, [userId]);
 
-  console.log("company data: ", companyData);
-
   return (
     <>
       <div className="min-h-screen flex bg-[#000d24] text-white">
