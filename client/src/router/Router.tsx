@@ -5,8 +5,8 @@ import About from "../Pages/Website/About";
 import Create from "../Components/AuthComponents/Create";
 import Login from "../Components/AuthComponents/Login";
 import Layout from "../Components/GlobalComponents/Layout";
-import Dashboard from "../Pages/Main/Dashboard/dashboard";
-import Projects from "../Pages/Main/Projects/projects";
+import Dashboard from "../Pages/Main/Dashboard/Dashboard";
+import Projects from "../Pages/Main/Projects/Projects";
 
 const Router = createBrowserRouter([
   {

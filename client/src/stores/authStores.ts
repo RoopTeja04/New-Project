@@ -11,6 +11,8 @@ interface AuthState {
   designation: string;
   loading: boolean;
 
+  isAuthenticated: boolean;
+
   setName: (name: string) => void;
   setEmail: (email: string) => void;
   setPassword: (password: string) => void;
@@ -19,10 +21,12 @@ interface AuthState {
   setDescription: (description: string) => void;
   setDesignation: (designation: string) => void;
   setLoading: (loading: boolean) => void;
+  setIsAuthenticated: (status: boolean) => void;
 
   resetData: () => void;
   createCompany: (Data: any) => any;
-  
+  loginAccount: (Data: any) => any;
+  checkAuthStatus: () => Promise<boolean>;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -34,6 +38,7 @@ const useAuthStore = create<AuthState>((set) => ({
   description: "",
   designation: "",
   loading: false,
+  isAuthenticated: false,
 
   setName: (name: string) => set({ name }),
   setEmail: (email: string) => set({ email }),
@@ -43,6 +48,7 @@ const useAuthStore = create<AuthState>((set) => ({
   setDescription: (description: string) => set({ description }),
   setDesignation: (designation: string) => set({ designation }),
   setLoading: (loading: boolean) => set({ loading }),
+  setIsAuthenticated: (status: boolean) => set({ isAuthenticated: status }),
 
   createCompany: async (Data: any) => {
     set({ loading: true });
@@ -55,6 +61,36 @@ const useAuthStore = create<AuthState>((set) => ({
     }
     finally{
       set({loading: false});
+    }
+  },
+
+  loginAccount: async (Data: any) => {
+    set({ loading: true });
+    try {
+      const { LoginUser } = await import("../services/auth");
+      const res = await LoginUser(Data);
+      set({ isAuthenticated: true });
+      return res;
+    } catch (err) {
+      set({ isAuthenticated: false, loading: false });
+      throw err;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  checkAuthStatus: async () => {
+    try {
+      const { checkSession } = await import("../services/auth");
+      const res = await checkSession();
+      if (res.status === 200) {
+        set({ isAuthenticated: true });
+        return true;
+      }
+      return false;
+    } catch (err) {
+      set({ isAuthenticated: false });
+      return false;
     }
   },
 

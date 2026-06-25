@@ -100,3 +100,11 @@ exports.Login = async (req, res) => {
     });
   }
 };
+
+exports.CheckSession = async (req, res) => {
+  if (req.session && req.session.userId) {
+    return res.status(200).json({ isAuthenticated: true, userId: req.session.userId });
+  } else {
+    return res.status(401).json({ isAuthenticated: false });
+  }
+};
