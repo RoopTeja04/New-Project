@@ -92,11 +92,19 @@ exports.Login = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Login successfull", FindCompanyMember });
+      .json({ message: "Login successfull", FindCompanyMember, userId: FindAccount._id });
   } catch (err) {
     return res.status(500).json({
       message: "Internal Server Error",
       error: err.message,
     });
+  }
+};
+
+exports.CheckSession = async (req, res) => {
+  if (req.session && req.session.userId) {
+    return res.status(200).json({ isAuthenticated: true, userId: req.session.userId });
+  } else {
+    return res.status(401).json({ isAuthenticated: false });
   }
 };
