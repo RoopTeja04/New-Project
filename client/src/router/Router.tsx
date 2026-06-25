@@ -7,6 +7,8 @@ import Login from "../Components/AuthComponents/Login";
 import Layout from "../Components/GlobalComponents/Layout";
 import Dashboard from "../Pages/Main/Dashboard/Dashboard";
 import Projects from "../Pages/Main/Projects/Projects";
+import Invites from "../Pages/Main/Invites/Invites";
+import Company from "../Pages/Main/Company/Company";
 
 const Router = createBrowserRouter([
   {
@@ -15,20 +17,22 @@ const Router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "about", element: <About /> },
-    ]
+    ],
   },
 
   { path: "/create", element: <Create /> },
   { path: "/login", element: <Login /> },
 
   {
-    path:"/dashboard",
+    path: "/dashboard",
     element: <Layout />,
-    children:[
+    children: [
       { index: true, element: <Dashboard /> },
-      { path: "projects", element:<Projects /> },
-    ]
-  }
+      { path: "projects", element: <Projects /> },
+      { path: "invites", element: <Invites /> },
+      { path: "company", element: <Company /> },
+    ],
+  },
 ]);
 
 export default Router;

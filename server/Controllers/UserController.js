@@ -92,7 +92,7 @@ exports.Login = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Login successfull", FindCompanyMember });
+      .json({ message: "Login successfull", FindCompanyMember, userId: FindAccount._id });
   } catch (err) {
     return res.status(500).json({
       message: "Internal Server Error",

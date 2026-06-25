@@ -10,6 +10,7 @@ const ColumnsRouter = require("./Routes/ColumnsRoute");
 const ProjectMemberRouter = require("./Routes/ProjectMemeberRoutes");
 const TaskRoutes = require("./Routes/TaskRoutes");
 const CommentRoutes = require("./Routes/CommentRoutes");
+const CompanyRouter = require("./Routes/CompanyRoute");
 // const ActivityLogsRoutes = require("./Routes/ActivityLogsRoutes");
 const MongoStore = require("connect-mongo").default;
 
@@ -64,6 +65,7 @@ app.use("/project-member", ProjectMemberRouter);
 app.use("/task", TaskRoutes);
 app.use("/comment", CommentRoutes);
 // app.use("/activity-log", ActivityLogsRoutes);
+app.use("/company", CompanyRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);

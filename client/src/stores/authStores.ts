@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { createUser } from "../services/auth";
+import { createUser, checkSession, LoginUser } from "../services/auth";
 
 interface AuthState {
   name: string;
@@ -12,6 +12,8 @@ interface AuthState {
   loading: boolean;
 
   isAuthenticated: boolean;
+
+  userId: string;
 
   setName: (name: string) => void;
   setEmail: (email: string) => void;
@@ -27,6 +29,8 @@ interface AuthState {
   createCompany: (Data: any) => any;
   loginAccount: (Data: any) => any;
   checkAuthStatus: () => Promise<boolean>;
+
+  setUserId: (userid: string) => void;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -34,11 +38,12 @@ const useAuthStore = create<AuthState>((set) => ({
   email: "",
   password: "",
   companyName: "",
-  website: "",  
+  website: "",
   description: "",
   designation: "",
   loading: false,
   isAuthenticated: false,
+  userId: "",
 
   setName: (name: string) => set({ name }),
   setEmail: (email: string) => set({ email }),
@@ -49,27 +54,26 @@ const useAuthStore = create<AuthState>((set) => ({
   setDesignation: (designation: string) => set({ designation }),
   setLoading: (loading: boolean) => set({ loading }),
   setIsAuthenticated: (status: boolean) => set({ isAuthenticated: status }),
+  setUserId: (userid: string) => set({ userId: userid }),
 
   createCompany: async (Data: any) => {
     set({ loading: true });
-    try{
+    try {
       const res = await createUser(Data);
       return res;
-    }catch(err){
-      set({loading: false});
+    } catch (err) {
+      set({ loading: false });
       throw err;
-    }
-    finally{
-      set({loading: false});
+    } finally {
+      set({ loading: false });
     }
   },
 
   loginAccount: async (Data: any) => {
     set({ loading: true });
     try {
-      const { LoginUser } = await import("../services/auth");
       const res = await LoginUser(Data);
-      set({ isAuthenticated: true });
+      set({ isAuthenticated: true, userId: res.data.userId });
       return res;
     } catch (err) {
       set({ isAuthenticated: false, loading: false });
@@ -81,10 +85,9 @@ const useAuthStore = create<AuthState>((set) => ({
 
   checkAuthStatus: async () => {
     try {
-      const { checkSession } = await import("../services/auth");
       const res = await checkSession();
       if (res.status === 200) {
-        set({ isAuthenticated: true });
+        set({ isAuthenticated: true, userId: res.data.userId });
         return true;
       }
       return false;
