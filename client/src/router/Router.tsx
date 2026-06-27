@@ -9,6 +9,7 @@ import Dashboard from "../Pages/Main/Dashboard/Dashboard";
 import Projects from "../Pages/Main/Projects/Projects";
 import Invites from "../Pages/Main/Invites/Invites";
 import Company from "../Pages/Main/Company/Company";
+import InviteHistory from "../Pages/Main/Invites/InviteHistory";
 
 const Router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ const Router = createBrowserRouter([
       { index: true, element: <Dashboard /> },
       { path: "projects", element: <Projects /> },
       { path: "invites", element: <Invites /> },
+      { path: "invites-history", element: <InviteHistory /> },
       { path: "company", element: <Company /> },
     ],
   },

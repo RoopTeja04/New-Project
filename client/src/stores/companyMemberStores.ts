@@ -1,11 +1,26 @@
 import { GetMembers } from "../services/companyMembers";
 import { create } from "zustand";
 
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  avatar: string;
+}
+
+interface Member {
+  _id: string;
+  companyID: string;
+  userID: User;
+  role: string;
+  designation: string;
+}
+
 interface CompanyMembers {
-  members: [];
+  members: Member[];
   loading: boolean;
 
-  setMembers: (members: any) => void;
+  setMembers: (members: Member[]) => void;
   setLoading: (loading: boolean) => void;
 
   getCompanyMembers: (id: string) => Promise<any>;
