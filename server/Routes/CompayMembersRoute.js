@@ -1,5 +1,5 @@
 const express = require("express");
-const { getCompanyMembers } = require("../Controllers/CompanyMembers");
+const { getCompanyMembers } = require("../Controllers/CompanyMembersController");
 
 const CompanyMembersRouter = express.Router();
 
