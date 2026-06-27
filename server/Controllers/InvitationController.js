@@ -108,3 +108,32 @@ exports.invitationRequest = async (req, res) => {
     });
   }
 };
+
+exports.GetInviteHistory = async (req, res) => {
+  const companyID = req.params.companyID;
+
+  try {
+    if (!companyID)
+      return res.status(401).json({ message: "Invalid company ID" });
+
+    const findCompanyId = await Company.find({ _id: companyID });
+
+    if (!findCompanyId)
+      return res
+        .status(401)
+        .json({ message: "unAuthorized! company not found" });
+
+    const InvitationHistory = await Invitation.find({
+      companyID: companyID,
+    }).populate("invitedID", "-password");
+
+    return res
+      .status(200)
+      .json({ message: "Invite History Found", InvitationHistory });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};
