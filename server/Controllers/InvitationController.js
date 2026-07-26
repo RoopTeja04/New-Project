@@ -137,3 +137,23 @@ exports.GetInviteHistory = async (req, res) => {
     });
   }
 };
+
+exports.DeleteInvite = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const findInvite = await Invitation.findById(id);
+
+    if (!findInvite)
+      return res.status(404).json({ message: "Invite Not Found" });
+
+    await Invitation.findByIdAndDelete(id);
+
+    return res.status(200).json({ message: "Invite Deleted Successfully" });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};

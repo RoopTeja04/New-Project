@@ -10,6 +10,7 @@ import Projects from "../Pages/Main/Projects/Projects";
 import Invites from "../Pages/Main/Invites/Invites";
 import Company from "../Pages/Main/Company/Company";
 import InviteHistory from "../Pages/Main/Invites/InviteHistory";
+import Invite from "../Pages/Main/Invites/invite";
 
 const Router = createBrowserRouter([
   {
@@ -34,6 +35,11 @@ const Router = createBrowserRouter([
       { path: "invites-history", element: <InviteHistory /> },
       { path: "company", element: <Company /> },
     ],
+  },
+
+  {
+    path: "/invite",
+    element: <Invite />,
   },
 ]);
 

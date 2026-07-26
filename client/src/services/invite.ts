@@ -5,6 +5,14 @@ const API = axios.create({
   withCredentials: true,
 });
 
-export const SendInvite = async(data: any) => {
+export const SendInvite = async (data: any) => {
   return await API.post("/", data);
-}
+};
+
+export const getHistoryInvite = async (companyID: string) => {
+  return await API.get(`/${companyID}`);
+};
+
+export const DeleteInvite = async (id: string) => {
+  return await API.delete(`/${id}`);
+};

@@ -15,7 +15,7 @@ const sendInviteMail = async ({
     },
   });
 
-  const inviteLink = `http://localhost:5173/invite/${token}`;
+  const inviteLink = `http://localhost:5173/invite?token=${token}`;
 
   await transporter.sendMail({
     from: process.env.SMTP_FROM,

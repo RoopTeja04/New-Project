@@ -1,18 +1,20 @@
 import { create } from "zustand";
-import { SendInvite } from "../services/invite";
+import { DeleteInvite, SendInvite, getHistoryInvite } from "../services/invite";
 
 interface Invite {
-  inviteData: any;
+  inviteData: any[];
   loading: boolean;
 
-  setInviteData: (inviteData: any) => void;
+  setInviteData: (inviteData: any[]) => void;
   setLoading: (loading: boolean) => void;
 
   sendInvite: (data: any) => Promise<any>;
+  getInviteHistory: (companyID: string) => Promise<any>;
+  deleteInvite: (id: string) => Promise<any>;
 }
 
 const useInviteStore = create<Invite>((set) => ({
-  inviteData: null,
+  inviteData: [],
   loading: false,
 
   setInviteData: (inviteData: any) => set({ inviteData }),
@@ -27,7 +29,33 @@ const useInviteStore = create<Invite>((set) => ({
       set({ loading: false });
       throw err.response?.data ?? err;
     } finally {
-      set({ inviteData: null, loading: false });
+      set({ loading: false });
+    }
+  },
+
+  getInviteHistory: async (companyID: string) => {
+    try {
+      set({ loading: true });
+      const res = await getHistoryInvite(companyID);
+      set({ inviteData: res.data.InvitationHistory, loading: false });
+    } catch (err: any) {
+      set({ loading: false });
+      throw err.response?.data ?? err;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  deleteInvite: async (id: string) => {
+    try {
+      set({ loading: true });
+      const res = await DeleteInvite(id);
+      set({ loading: false });
+    } catch (err: any) {
+      set({ loading: false });
+      throw err.response?.data ?? err;
+    } finally {
+      set({ loading: false });
     }
   },
 }));
