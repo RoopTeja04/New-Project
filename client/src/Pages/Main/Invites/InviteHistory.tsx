@@ -13,7 +13,7 @@ const InviteHistory = () => {
   const { getInviteHistory, inviteData, deleteInvite, loading } =
     useInviteStore();
 
-  const [deletedId, setDeletedId] = useState("");
+  const [deletedId, setDeletedId] = useState<string>("");
 
   useEffect(() => {
     if (companyData?._id) {
