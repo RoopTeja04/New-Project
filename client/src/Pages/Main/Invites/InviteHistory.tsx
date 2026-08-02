@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useCompanyStore from "../../../stores/companyStores";
 import useInviteStore from "../../../stores/InviteStores";
@@ -96,7 +96,7 @@ const InviteHistory = () => {
                       {data.designation || "-"}
                     </td>
                     <td className="px-4 py-4 border-t border-gray-300">
-                      {data.status || "-"}
+                      {data.status || "-"}ed
                     </td>
                     <td className="px-4 py-4 border-t border-gray-300">
                       <button

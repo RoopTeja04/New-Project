@@ -104,18 +104,63 @@ exports.GetProjectByCompany = async (req, res) => {
   const { companyID } = req.params;
 
   try {
+    const FindProjects = await Projects.find({ companyID }).populate(
+      "ownerID",
+      "-password",
+    );
 
-    const FindProjects = await Projects.find({ companyID }).populate("ownerID", "-password");
-
-    if(!FindProjects)
+    if (!FindProjects)
       return res.status(404).json({ message: "No Projects Found" });
 
     return res.status(200).json({
       message: "Projects Found Successfully",
       Total: FindProjects.length,
       Projects: FindProjects,
-    })
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};
 
+exports.GetProjectStats = async (req, res) => {
+  const { companyID } = req.params;
+
+  try {
+
+    const FindProjects = await Projects.find({ companyID });
+
+    if (!FindProjects)
+      return res.status(404).json({ message: "No Projects Found" });
+
+    const payload = {
+      totalProjects: FindProjects.length,
+      notStartedProjects: FindProjects.filter(
+        (project) => project.status === "Not-Started"
+      ).length,
+      startedProjects: FindProjects.filter(
+        (project) => project.status === "Started"
+      ).length,
+      inprogressProjects: FindProjects.filter(
+        (project) => project.status === "In-Progress"
+      ).length,
+      almostCompletedProjects: FindProjects.filter(
+        (project) => project.status === "Almost Completed"
+      ).length,
+      finalStageProjects: FindProjects.filter(
+        (project) => project.status === "Final Stage"
+      ).length,
+      completedProjects: FindProjects.filter(
+        (project) => project.status === "Completed"
+      ).length,
+    };
+
+    return res.status(200).json({
+      message: "Project Stats Retrieved Successfully",
+      stats: payload,
+    });
 
   } catch (err) {
     return res.status(500).json({

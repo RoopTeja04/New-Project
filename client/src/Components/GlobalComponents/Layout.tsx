@@ -46,6 +46,16 @@ const Layout = () => {
               Invites
             </NavLink>
             <NavLink
+              to="/dashboard/projects"
+              className={({ isActive }) =>
+                isActive
+                  ? "pl-2 text-sm font-semibold bg-[#2e3b51] p-2 rounded-md"
+                  : "pl-2 text-sm font-semibold hover:bg-[#2e3b51] p-2 rounded-md"
+              }
+            >
+              Projects
+            </NavLink>
+            <NavLink
               to="/dashboard/company"
               className={({ isActive }) =>
                 isActive

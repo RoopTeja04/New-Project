@@ -8,7 +8,7 @@ import InviteModal from "./InviteModal";
 
 const Invites = () => {
   const { companyData } = useCompanyStore();
-  const { getCompanyMembers, members, loading } = useCompanyMembersStore();
+  const { getCompanyMembers, members } = useCompanyMembersStore();
 
   const [showInvite, setShowInvite] = React.useState<boolean>(false);
 
