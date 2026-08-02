@@ -10,7 +10,7 @@ import Projects from "../Pages/Main/Projects/Projects";
 import Invites from "../Pages/Main/Invites/Invites";
 import Company from "../Pages/Main/Company/Company";
 import InviteHistory from "../Pages/Main/Invites/InviteHistory";
-import Invite from "../Pages/Main/Invites/invite";
+import Invite from "../Pages/Main/Invites/Invite";
 
 const Router = createBrowserRouter([
   {

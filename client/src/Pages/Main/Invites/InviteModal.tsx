@@ -75,7 +75,7 @@ const InviteModal = ({ showInvite, setShowInvite }: any) => {
     };
 
     try {
-      const res = await sendInvite(finalData);
+      await sendInvite(finalData);
       setSuccess("Invite sent successfully.");
 
       setData({
@@ -90,7 +90,7 @@ const InviteModal = ({ showInvite, setShowInvite }: any) => {
         setShowInvite(false);
       }, 2000);
     } catch (err: any) {
-      console.log(err)
+      console.log(err);
       const message = err.message || "Something went wrong.";
 
       setServerError(message);

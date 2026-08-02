@@ -1,5 +1,10 @@
 import { create } from "zustand";
-import { DeleteInvite, SendInvite, getHistoryInvite } from "../services/invite";
+import {
+  DeleteInvite,
+  RespondToInvitation,
+  SendInvite,
+  getHistoryInvite,
+} from "../services/invite";
 
 interface Invite {
   inviteData: any[];
@@ -11,6 +16,7 @@ interface Invite {
   sendInvite: (data: any) => Promise<any>;
   getInviteHistory: (companyID: string) => Promise<any>;
   deleteInvite: (id: string) => Promise<any>;
+  respondToInvitation: (data: any) => Promise<any>;
 }
 
 const useInviteStore = create<Invite>((set) => ({
@@ -49,8 +55,21 @@ const useInviteStore = create<Invite>((set) => ({
   deleteInvite: async (id: string) => {
     try {
       set({ loading: true });
-      const res = await DeleteInvite(id);
+      await DeleteInvite(id);
       set({ loading: false });
+    } catch (err: any) {
+      set({ loading: false });
+      throw err.response?.data ?? err;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  respondToInvitation: async (data: any) => {
+    try {
+      set({ loading: true });
+      const res = await RespondToInvitation(data);
+      return res;
     } catch (err: any) {
       set({ loading: false });
       throw err.response?.data ?? err;
