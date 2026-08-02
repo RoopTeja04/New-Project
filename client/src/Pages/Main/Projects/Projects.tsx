@@ -9,12 +9,14 @@ import {
 } from "react-icons/fa";
 import useCompanyStore from "../../../stores/companyStores";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { GetStats } from "../../../services/company";
 import Counter from "../../../Components/GlobalComponents/Counter";
 import { FaFolderPlus } from "react-icons/fa";
 
 const Projects = () => {
   const { companyData } = useCompanyStore();
+  const navigate = useNavigate();
 
   const [stats, setStats] = useState<any>([]);
 
@@ -42,7 +44,10 @@ const Projects = () => {
           <h1 className="text-xl font-medium tracking-wide ml-4 mt-2">
             Monitor project progress, members, and workflows
           </h1>
-          <button className="px-5 py-2 bg-green-600 rounded-lg tracking-wide flex items-center space-x-2 cursor-pointer">
+          <button
+            onClick={() => navigate("/dashboard/projects/add")}
+            className="px-5 py-2 bg-green-600 rounded-lg tracking-wide flex items-center space-x-2 cursor-pointer"
+          >
             <FaFolderPlus />
             <p className="font-medium">Create Project</p>
           </button>
