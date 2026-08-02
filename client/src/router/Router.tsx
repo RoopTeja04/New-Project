@@ -7,6 +7,7 @@ import Login from "../Components/AuthComponents/Login";
 import Layout from "../Components/GlobalComponents/Layout";
 import Dashboard from "../Pages/Main/Dashboard/Dashboard";
 import Projects from "../Pages/Main/Projects/Projects";
+import AddProjects from "../Pages/Main/Projects/AddProjects";
 import Invites from "../Pages/Main/Invites/Invites";
 import Company from "../Pages/Main/Company/Company";
 import InviteHistory from "../Pages/Main/Invites/InviteHistory";
@@ -31,6 +32,7 @@ const Router = createBrowserRouter([
     children: [
       { index: true, element: <Dashboard /> },
       { path: "projects", element: <Projects /> },
+      { path: "projects/add", element: <AddProjects /> },
       { path: "invites", element: <Invites /> },
       { path: "invites-history", element: <InviteHistory /> },
       { path: "company", element: <Company /> },
