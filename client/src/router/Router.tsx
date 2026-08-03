@@ -32,7 +32,7 @@ const Router = createBrowserRouter([
     children: [
       { index: true, element: <Dashboard /> },
       { path: "projects", element: <Projects /> },
-      { path: "projects/add", element: <AddProjects /> },
+      { path: "add-projects", element: <AddProjects /> },
       { path: "invites", element: <Invites /> },
       { path: "invites-history", element: <InviteHistory /> },
       { path: "company", element: <Company /> },

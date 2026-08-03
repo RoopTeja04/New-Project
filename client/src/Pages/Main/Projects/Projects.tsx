@@ -45,7 +45,7 @@ const Projects = () => {
             Monitor project progress, members, and workflows
           </h1>
           <button
-            onClick={() => navigate("/dashboard/projects/add")}
+            onClick={() => navigate("/dashboard/add-projects")}
             className="px-5 py-2 bg-green-600 rounded-lg tracking-wide flex items-center space-x-2 cursor-pointer"
           >
             <FaFolderPlus />
