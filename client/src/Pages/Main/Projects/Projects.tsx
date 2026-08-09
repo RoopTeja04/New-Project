@@ -163,6 +163,11 @@ const Projects = () => {
             {projects.map((project) => (
               <div
                 key={project._id}
+                onClick={() =>
+                  navigate(`/dashboard/view-project`, {
+                    state: { projectID: project._id },
+                  })
+                }
                 className="flex cursor-pointer select-none flex-col gap-3 rounded-xl border border-gray-700 bg-[#071225] p-5 transition hover:border-blue-500"
               >
                 <div className="flex items-start justify-between gap-2">
