@@ -3,6 +3,8 @@ const Company = require("../Models/CompanyModel");
 const User = require("../Models/UserModel");
 const Columns = require("../Models/ColumnsModel");
 const ProjectMembers = require("../Models/ProjectMembers");
+const Task = require("../Models/TaskModel");
+const ActivityLog = require("../Models/ActivityLogs");
 
 exports.CreateProject = async (req, res) => {
   const {
@@ -129,7 +131,6 @@ exports.GetProjectStats = async (req, res) => {
   const { companyID } = req.params;
 
   try {
-
     const FindProjects = await Projects.find({ companyID });
 
     if (!FindProjects)
@@ -138,22 +139,22 @@ exports.GetProjectStats = async (req, res) => {
     const payload = {
       totalProjects: FindProjects.length,
       notStartedProjects: FindProjects.filter(
-        (project) => project.status === "Not-Started"
+        (project) => project.status === "Not-Started",
       ).length,
       startedProjects: FindProjects.filter(
-        (project) => project.status === "Started"
+        (project) => project.status === "Started",
       ).length,
       inprogressProjects: FindProjects.filter(
-        (project) => project.status === "In-Progress"
+        (project) => project.status === "In-Progress",
       ).length,
       almostCompletedProjects: FindProjects.filter(
-        (project) => project.status === "Almost Completed"
+        (project) => project.status === "Almost Completed",
       ).length,
       finalStageProjects: FindProjects.filter(
-        (project) => project.status === "Final Stage"
+        (project) => project.status === "Final Stage",
       ).length,
       completedProjects: FindProjects.filter(
-        (project) => project.status === "Completed"
+        (project) => project.status === "Completed",
       ).length,
     };
 
@@ -161,7 +162,58 @@ exports.GetProjectStats = async (req, res) => {
       message: "Project Stats Retrieved Successfully",
       stats: payload,
     });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};
 
+exports.UpdateProject = async (req, res) => {
+  const { projectID } = req.params;
+  const { status } = req.body;
+
+  try {
+    const FindProject = await Projects.findById(projectID);
+
+    if (!FindProject)
+      return res.status(400).json({ message: "Project Not Found" });
+
+    FindProject.status = status;
+
+    await FindProject.save();
+
+    return res.status(201).json({
+      message: "Project Status Updated Successfully",
+      projectID: FindProject._id,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};
+
+exports.DeleteProject = async (req, res) => {
+  const { projectID } = req.params;
+
+  try {
+    const FindProject = await Projects.findById(projectID);
+
+    if (!FindProject)
+      return res.status(400).json({ message: "Project Not Found" });
+
+    await Projects.findByIdAndDelete(projectID);
+    await ProjectMembers.deleteMany({ projectID });
+    await Columns.deleteMany({ projectID });
+    await Task.deleteMany({ projectID });
+    await ActivityLog.deleteMany({ projectID });
+
+    return res.status(200).json({
+      message: "Project Deleted Successfully",
+    });
   } catch (err) {
     return res.status(500).json({
       message: "Internal Server Error",

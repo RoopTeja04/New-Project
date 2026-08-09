@@ -1,19 +1,67 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import { toast } from "react-toastify";
 import {
   FaProjectDiagram,
   FaExternalLinkAlt,
   FaTasks,
   FaEdit,
   FaTrash,
+  FaRegCircle,
+  FaPlay,
+  FaSpinner,
+  FaHourglassHalf,
+  FaFlagCheckered,
+  FaCheckCircle,
 } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
 import { FaRegCircleUser } from "react-icons/fa6";
+import { IoIosArrowDown } from "react-icons/io";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import useProjectStore from "../../../stores/ProjectStores";
 import useCompanyStore from "../../../stores/companyStores";
 import useCompanyMembersStore from "../../../stores/companyMemberStores";
+import { DeleteProject, UpdateProjectStatus } from "../../../services/project";
+
+const STATUS_LIST = [
+  {
+    name: "Not-Started",
+    icon: FaRegCircle,
+    badge: "bg-gray-500/10 text-gray-400",
+    accent: "hover:border-gray-500",
+  },
+  {
+    name: "Started",
+    icon: FaPlay,
+    badge: "bg-blue-500/10 text-blue-400",
+    accent: "hover:border-blue-500",
+  },
+  {
+    name: "In-Progress",
+    icon: FaSpinner,
+    badge: "bg-yellow-500/10 text-yellow-400",
+    accent: "hover:border-yellow-500",
+  },
+  {
+    name: "Almost Completed",
+    icon: FaHourglassHalf,
+    badge: "bg-orange-500/10 text-orange-400",
+    accent: "hover:border-orange-500",
+  },
+  {
+    name: "Final Stage",
+    icon: FaFlagCheckered,
+    badge: "bg-purple-500/10 text-purple-400",
+    accent: "hover:border-purple-500",
+  },
+  {
+    name: "Completed",
+    icon: FaCheckCircle,
+    badge: "bg-green-500/10 text-green-400",
+    accent: "hover:border-green-500",
+  },
+];
 
 const ViewProject = () => {
   const navigate = useNavigate();
@@ -25,6 +73,9 @@ const ViewProject = () => {
     useCompanyMembersStore();
 
   const [showOptions, setShowOptions] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [showStatusMenu, setShowStatusMenu] = useState(false);
+  const [deleteStatus, setDeleteStatus] = useState<boolean>(false);
 
   useEffect(() => {
     if (projectID) getProjectDetails(projectID);
@@ -53,6 +104,41 @@ const ViewProject = () => {
     );
   }
 
+  const currentStatusName = selectedStatus ?? project.status;
+  const currentStatusMeta =
+    STATUS_LIST.find((s) => s.name === currentStatusName) || STATUS_LIST[0];
+  const CurrentStatusIcon = currentStatusMeta.icon;
+
+  const handleStatusChange = async (newStatus: string) => {
+    const previousStatus = currentStatusName;
+    setSelectedStatus(newStatus);
+    setShowStatusMenu(false);
+
+    try {
+      const res = await UpdateProjectStatus(project._id, newStatus);
+      toast.success(res.data?.message || "Project status updated successfully");
+    } catch (err: any) {
+      setSelectedStatus(previousStatus);
+      toast.error(
+        err.response?.data?.message || "Failed to update project status",
+      );
+    }
+  };
+
+  const handleDelete = (projectID: string) => async () => {
+    setDeleteStatus(true);
+    try {
+      const res = await DeleteProject(projectID);
+      toast.success(res.data.message || "Project deleted successfully");
+      navigate("/dashboard/projects");
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      toast.error("Failed to delete project");
+    } finally {
+      setDeleteStatus(false);
+    }
+  };
+
   return (
     <div className="w-full min-h-screen flex flex-col space-y-6 px-6 py-6">
       <button
@@ -77,15 +163,64 @@ const ViewProject = () => {
         </div>
 
         <div className="flex items-center gap-4">
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowStatusMenu((prev) => !prev)}
+              onBlur={() => setTimeout(() => setShowStatusMenu(false), 150)}
+              className={`flex cursor-pointer items-center gap-2 rounded-lg border border-gray-700 bg-[#08162B] px-3 py-2 text-sm transition ${currentStatusMeta.accent}`}
+            >
+              <span
+                className={`flex h-6 w-6 items-center justify-center rounded-full ${currentStatusMeta.badge}`}
+              >
+                <CurrentStatusIcon size={12} />
+              </span>
+              <span className="font-medium text-white">
+                {currentStatusName}
+              </span>
+              <IoIosArrowDown
+                className={`text-gray-400 transition-transform duration-200 ${
+                  showStatusMenu ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {showStatusMenu && (
+              <div className="absolute left-0 top-full z-30 mt-2 w-52 overflow-hidden rounded-lg border border-gray-700 bg-[#071225] shadow-2xl">
+                {STATUS_LIST.map((item) => {
+                  const Icon = item.icon;
+                  const isSelected = item.name === currentStatusName;
+
+                  return (
+                    <button
+                      key={item.name}
+                      type="button"
+                      onMouseDown={() => handleStatusChange(item.name)}
+                      className={`flex w-full cursor-pointer items-center gap-2.5 border-b border-gray-800 px-3 py-2.5 text-left text-sm transition-colors last:border-none hover:bg-gray-800 ${
+                        isSelected ? "bg-gray-800" : ""
+                      }`}
+                    >
+                      <span
+                        className={`flex h-6 w-6 items-center justify-center rounded-full ${item.badge}`}
+                      >
+                        <Icon size={12} />
+                      </span>
+                      <span className="text-gray-200">{item.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
           {project.projectLink && (
             <a
               href={project.projectLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm font-medium text-blue-400 transition hover:text-blue-300 hover:underline"
+              className="flex items-center gap-2 text-sm font-medium text-blue-400 transition hover:text-blue-300 hover:underline underline-offset-4"
             >
-              {project.projectLink}
-              <FaExternalLinkAlt size={12} />
+              Project Link <FaExternalLinkAlt size={12} />
             </a>
           )}
 
@@ -115,9 +250,21 @@ const ViewProject = () => {
                 <span>Edit Project</span>
               </button>
 
-              <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-red-400 transition hover:bg-red-500/10 hover:text-red-300">
-                <FaTrash />
-                <span>Delete Project</span>
+              <button
+                onClick={handleDelete(projectID)}
+                className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-red-400 transition hover:bg-red-500/10 hover:text-red-300"
+              >
+                {deleteStatus ? (
+                  <>
+                    {" "}
+                    <FaTrash /> <span>Deleting...</span>
+                  </>
+                ) : (
+                  <>
+                    <FaTrash />
+                    <span>Delete Project</span>
+                  </>
+                )}
               </button>
             </div>
           )}
