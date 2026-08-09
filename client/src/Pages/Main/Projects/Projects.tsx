@@ -10,10 +10,14 @@ import {
 import { FaRegCircleUser } from "react-icons/fa6";
 import useCompanyStore from "../../../stores/companyStores";
 import useProjectStore from "../../../stores/ProjectStores";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Counter from "../../../Components/GlobalComponents/Counter";
 import { FaFolderPlus } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { HiDotsHorizontal } from "react-icons/hi";
+import { DeleteProject } from "../../../services/project";
+import { toast } from "react-toastify";
 
 const STATUS_STYLES: Record<string, string> = {
   "Not-Started": "bg-gray-500/10 text-gray-400",
@@ -30,6 +34,10 @@ const Projects = () => {
     useProjectStore();
   const navigate = useNavigate();
 
+  const [selectedProjectID, setSelectedProjectID] = useState<string | null>(
+    null,
+  );
+
   useEffect(() => {
     const companyId = companyData?._id;
 
@@ -38,6 +46,22 @@ const Projects = () => {
       getProjectByCompany(companyId).catch((err) => console.error(err));
     }
   }, [companyData]);
+
+  const handleDelete = (projectID: string, companyId: string) => async () => {
+    setSelectedProjectID(projectID);
+    try {
+      const res = await DeleteProject(projectID);
+      toast.success(res.data.message || "Project deleted successfully");
+      getProjectStats(companyId).catch((err) => console.error(err));
+      getProjectByCompany(companyId).catch((err) => console.error(err));
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      toast.error("Failed to delete project");
+      setSelectedProjectID(null);
+    }finally {
+      setSelectedProjectID(null);
+    }
+  };
 
   return (
     <div className="w-full min-h-screen flex flex-col space-y-6 px-6 py-6">
@@ -163,15 +187,17 @@ const Projects = () => {
             {projects.map((project) => (
               <div
                 key={project._id}
-                onClick={() =>
-                  navigate(`/dashboard/view-project`, {
-                    state: { projectID: project._id },
-                  })
-                }
                 className="flex cursor-pointer select-none flex-col gap-3 rounded-xl border border-gray-700 bg-[#071225] p-5 transition hover:border-blue-500"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="truncate text-lg font-semibold text-white hover:underline hover:underline-offset-4">
+                  <h3
+                    onClick={() =>
+                      navigate(`/dashboard/view-project`, {
+                        state: { projectID: project._id },
+                      })
+                    }
+                    className="truncate text-lg font-semibold text-white hover:underline hover:underline-offset-4"
+                  >
                     {project.name}
                   </h3>
                   <span
@@ -201,11 +227,27 @@ const Projects = () => {
                   </div>
                 )}
 
-                <div className="mt-2 flex items-center gap-2 border-t border-gray-800 pt-3">
-                  <FaRegCircleUser className="text-gray-500" />
-                  <span className="text-xs text-gray-400">
-                    {project.ownerID?.name || "Unknown Owner"}
-                  </span>
+                <div className="mt-2 flex items-center justify-between gap-2 border-t border-gray-800 pt-3">
+                  <div className="mt-2 flex items-center gap-2">
+                    <FaRegCircleUser className="text-gray-500" />
+                    <span className="text-xs text-gray-400">
+                      {project.ownerID?.name || "Unknown Owner"}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleDelete(project._id, companyData?._id)}
+                    className="hover:bg-gray-700/80 rounded-md transition-colors duration-300 p-2 cursor-pointer"
+                  >
+                    {project._id === selectedProjectID ? (
+                      <HiDotsHorizontal size={18} className="text-red-500" />
+                    ) : (
+                      <RiDeleteBin6Line
+                        size={18}
+                        className="text-red-500 hover:text-red-500"
+                      />
+                    )}
+                  </button>
                 </div>
               </div>
             ))}

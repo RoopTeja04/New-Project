@@ -35,3 +35,11 @@ export const GetProjectByCompany = async (companyID: string) => {
 export const GetProjectStats = async (companyID: string) => {
   return await API.get(`/stats/${companyID}`);
 };
+
+export const UpdateProjectStatus = async (projectID: string, status: string) => {
+  return await API.patch(`/${projectID}`, { status });
+};
+
+export const DeleteProject = async (projectID: string) => {
+  return await API.delete(`/${projectID}`);
+}
