@@ -19,7 +19,7 @@ const Layout = () => {
 
   return (
     <>
-      <div className="min-h-screen flex bg-[#000d24] text-white">
+      <div className="min-h-screen flex bg-[#000d24] text-white overflow-x-hidden">
         <div className="w-[15%] border-r-2 border-[#2e3b51] px-4 py-8 sticky top-0 h-screen overflow-y-auto">
           <h1 className="text-xl font-bold pl-4">{companyData?.companyName}</h1>
 
@@ -68,7 +68,7 @@ const Layout = () => {
           </div>
         </div>
 
-        <div className="w-full flex-1 h-full bg-transparent">
+        <div className="w-full min-w-0 flex-1 h-full bg-transparent">
           <Outlet />
         </div>
       </div>

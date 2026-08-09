@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { FaProjectDiagram, FaExternalLinkAlt, FaTasks, FaEdit, FaTrash } from "react-icons/fa";
+import {
+  FaProjectDiagram,
+  FaExternalLinkAlt,
+  FaTasks,
+  FaEdit,
+  FaTrash,
+} from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { MdKeyboardArrowLeft } from "react-icons/md";
@@ -91,8 +97,15 @@ const ViewProject = () => {
           </button>
 
           {showOptions && (
-            <div className="absolute right-6 top-38 z-10 w-44 rounded-lg border border-gray-700 bg-[#071225] p-2 shadow-lg">
-              <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-gray-300 transition hover:bg-gray-700 hover:text-white">
+            <div className="absolute right-10 top-38 z-10 w-44 rounded-lg border border-gray-700 bg-[#071225] p-2 shadow-lg">
+              <button
+                onClick={() => {
+                  navigate("/dashboard/tasks-view-project", {
+                    state: { projectID: project._id },
+                  });
+                }}
+                className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-gray-300 transition hover:bg-gray-700 hover:text-white"
+              >
                 <FaTasks className="text-blue-400" />
                 <span>View Tasks</span>
               </button>
@@ -150,7 +163,7 @@ const ViewProject = () => {
           </div>
 
           <div className="flex flex-col gap-2">
-            {columns.map((column: any, index: number) => (
+            {columns.map((column: any) => (
               <div
                 key={column._id}
                 className="flex items-center gap-3 rounded-lg border border-gray-800 bg-[#08162B] px-4 py-2.5"
