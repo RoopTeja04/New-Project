@@ -155,7 +155,7 @@ const AddProjects = () => {
           onClick={() => navigate(-1)}
           className="border border-gray-600 px-2 py-1 rounded-lg hover:bg-gray-800 transition"
         >
-          <MdKeyboardArrowLeft size={26} />
+          <MdKeyboardArrowLeft size={22} />
         </button>
 
         <h1 className="text-xl font-semibold tracking-wide">Create Project</h1>
@@ -207,7 +207,7 @@ const AddProjects = () => {
                   }
                 }}
                 placeholder="Enter project description"
-                className="w-full rounded-xl border border-gray-600 bg-transparent py-3 pl-12 pr-4 resize-none outline-none focus:border-blue-500"
+                className="w-full rounded-xl border border-gray-600 bg-transparent py-3 pl-12 pr-4 resize-none outline-none focus:border-blue-500 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               />
             </div>
             {errors.description && (

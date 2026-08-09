@@ -221,3 +221,30 @@ exports.DeleteProject = async (req, res) => {
     });
   }
 };
+
+exports.updateProjectDetails = async (req, res) => {
+  const { projectID } = req.params;
+  const { payload } = req.body;
+
+  try {
+    const FindProject = await Projects.findById(projectID);
+
+    if (!FindProject)
+      return res.status(400).json({ message: "Project Not Found" });
+
+    const updatedProject = await Projects.findByIdAndUpdate(
+      projectID,
+      { $set: payload },
+      { new: true },
+    );
+
+    return res.status(200).json({
+      message: "Project Details Updated Successfully",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};

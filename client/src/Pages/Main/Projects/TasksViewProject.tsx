@@ -47,9 +47,9 @@ const TasksViewProject = () => {
   const [newColumnTitle, setNewColumnTitle] = useState("");
   const [openColumnMenu, setOpenColumnMenu] = useState<string | null>(null);
 
-  const [activeColumnForTask, setActiveColumnForTask] = useState<
-    string | null
-  >(null);
+  const [activeColumnForTask, setActiveColumnForTask] = useState<string | null>(
+    null,
+  );
   const [taskForm, setTaskForm] = useState({
     title: "",
     description: "",
@@ -233,11 +233,7 @@ const TasksViewProject = () => {
       </div>
 
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable
-          droppableId="board"
-          direction="horizontal"
-          type="COLUMN"
-        >
+        <Droppable droppableId="board" direction="horizontal" type="COLUMN">
           {(boardProvided) => (
             <div
               ref={boardProvided.innerRef}
@@ -310,76 +306,82 @@ const TasksViewProject = () => {
                                   : ""
                               }`}
                             >
-                              {tasks.map((task: any, taskIndex: number) => (
-                                <Draggable
-                                  key={task._id}
-                                  draggableId={task._id}
-                                  index={taskIndex}
-                                >
-                                  {(taskDragProvided, taskDragSnapshot) => (
-                                    <div
-                                      ref={taskDragProvided.innerRef}
-                                      {...taskDragProvided.draggableProps}
-                                      {...taskDragProvided.dragHandleProps}
-                                      className={`group flex cursor-grab flex-col gap-2 rounded-lg border border-gray-800 bg-[#08162B] p-3 transition ${
-                                        taskDragSnapshot.isDragging
-                                          ? "border-blue-500 shadow-lg"
-                                          : ""
-                                      }`}
-                                    >
-                                      <div className="flex items-start justify-between gap-2">
-                                        <p className="text-sm font-medium text-white">
-                                          {task.title}
-                                        </p>
-                                        <button
-                                          type="button"
-                                          onClick={() =>
-                                            handleDeleteTask(
-                                              task._id,
-                                              column._id,
-                                            )
-                                          }
-                                          className="cursor-pointer text-gray-600 opacity-0 transition group-hover:opacity-100 hover:text-red-500"
-                                        >
-                                          <FaTrash size={11} />
-                                        </button>
-                                      </div>
+                              {tasks.length > 0 ? (
+                                tasks.map((task: any, taskIndex: number) => (
+                                  <Draggable
+                                    key={task._id}
+                                    draggableId={task._id}
+                                    index={taskIndex}
+                                  >
+                                    {(taskDragProvided, taskDragSnapshot) => (
+                                      <div
+                                        ref={taskDragProvided.innerRef}
+                                        {...taskDragProvided.draggableProps}
+                                        {...taskDragProvided.dragHandleProps}
+                                        className={`group flex cursor-grab flex-col gap-2 rounded-lg border border-gray-800 bg-[#08162B] p-3 transition ${
+                                          taskDragSnapshot.isDragging
+                                            ? "border-blue-500 shadow-lg"
+                                            : ""
+                                        }`}
+                                      >
+                                        <div className="flex items-start justify-between gap-2">
+                                          <p className="text-sm font-medium text-white">
+                                            {task.title}
+                                          </p>
+                                          <button
+                                            type="button"
+                                            onClick={() =>
+                                              handleDeleteTask(
+                                                task._id,
+                                                column._id,
+                                              )
+                                            }
+                                            className="cursor-pointer text-gray-600 opacity-0 transition group-hover:opacity-100 hover:text-red-500"
+                                          >
+                                            <FaTrash size={16} />
+                                          </button>
+                                        </div>
 
-                                      {task.description && (
-                                        <p className="line-clamp-2 text-xs text-gray-400">
-                                          {task.description}
-                                        </p>
-                                      )}
+                                        {task.description && (
+                                          <p className="line-clamp-2 text-xs text-gray-400">
+                                            {task.description}
+                                          </p>
+                                        )}
 
-                                      <div className="flex items-center justify-between pt-1">
-                                        <span
-                                          className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                                            PRIORITY_STYLES[task.priority] ||
-                                            "bg-gray-500/10 text-gray-400"
-                                          }`}
-                                        >
-                                          {task.priority}
-                                        </span>
-
-                                        <div className="flex items-center gap-1.5">
-                                          {task.assigneedID?.avatar ? (
-                                            <img
-                                              src={task.assigneedID.avatar}
-                                              alt={task.assigneedID.name}
-                                              className="h-5 w-5 rounded-full object-cover"
-                                            />
-                                          ) : (
-                                            <FaRegCircleUser className="h-5 w-5 text-gray-500" />
-                                          )}
-                                          <span className="text-[11px] text-gray-400">
-                                            {task.assigneedID?.name}
+                                        <div className="flex items-center justify-between pt-1">
+                                          <span
+                                            className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                                              PRIORITY_STYLES[task.priority] ||
+                                              "bg-gray-500/10 text-gray-400"
+                                            }`}
+                                          >
+                                            {task.priority}
                                           </span>
+
+                                          <div className="flex items-center gap-1.5">
+                                            {task.assigneedID?.avatar ? (
+                                              <img
+                                                src={task.assigneedID.avatar}
+                                                alt={task.assigneedID.name}
+                                                className="h-5 w-5 rounded-full object-cover"
+                                              />
+                                            ) : (
+                                              <FaRegCircleUser className="h-5 w-5 text-gray-500" />
+                                            )}
+                                            <span className="text-[11px] text-gray-400">
+                                              {task.assigneedID?.name}
+                                            </span>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  )}
-                                </Draggable>
-                              ))}
+                                    )}
+                                  </Draggable>
+                                ))
+                              ) : (
+                                <p className="text-gray-500 text-center text-sm mt-4">
+                                  No tasks available
+                                </p>
+                              )}
                               {taskProvided.placeholder}
                             </div>
                           )}
@@ -438,9 +440,7 @@ const TasksViewProject = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md">
           <div className="w-full max-w-lg rounded-2xl border border-gray-700 bg-[#08111F] p-6 shadow-2xl">
             <div className="mb-6 flex items-center justify-between border-b border-gray-700 pb-4">
-              <h2 className="text-xl font-semibold text-white">
-                Add Task
-              </h2>
+              <h2 className="text-xl font-semibold text-white">Add Task</h2>
               <button
                 onClick={() => setActiveColumnForTask(null)}
                 className="cursor-pointer rounded-full p-2 text-gray-400 transition hover:bg-gray-700 hover:text-white"

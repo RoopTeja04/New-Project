@@ -245,7 +245,14 @@ const ViewProject = () => {
                 <span>View Tasks</span>
               </button>
 
-              <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-gray-300 transition hover:bg-gray-700 hover:text-white">
+              <button
+                onClick={() =>
+                  navigate("/dashboard/update-project-details", {
+                    state: { projectID: project._id },
+                  })
+                }
+                className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-gray-300 transition hover:bg-gray-700 hover:text-white"
+              >
                 <FaEdit className="text-yellow-400" />
                 <span>Edit Project</span>
               </button>
