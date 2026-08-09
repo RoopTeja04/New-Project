@@ -8,34 +8,24 @@ import {
   FaProjectDiagram,
 } from "react-icons/fa";
 import useCompanyStore from "../../../stores/companyStores";
-import { useEffect, useState } from "react";
+import useProjectStore from "../../../stores/ProjectStores";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GetStats } from "../../../services/company";
 import Counter from "../../../Components/GlobalComponents/Counter";
 import { FaFolderPlus } from "react-icons/fa";
 
 const Projects = () => {
   const { companyData } = useCompanyStore();
+  const { stats, getProjectStats } = useProjectStore();
   const navigate = useNavigate();
-
-  const [stats, setStats] = useState<any>([]);
 
   useEffect(() => {
     const companyId = companyData?._id;
 
     if (companyId) {
-      getStats(companyId);
+      getProjectStats(companyId).catch((err) => console.error(err));
     }
   }, [companyData]);
-
-  const getStats = async (id: string) => {
-    try {
-      const res = await GetStats(id);
-      if (res.status === 200) setStats(res.data.stats);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   return (
     <>
