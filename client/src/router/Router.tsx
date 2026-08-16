@@ -14,6 +14,7 @@ import InviteHistory from "../Pages/Main/Invites/InviteHistory";
 import Invite from "../Pages/Main/Invites/Invite";
 import ViewProject from "../Pages/Main/Projects/ViewProject";
 import TasksViewProject from "../Pages/Main/Projects/TasksViewProject";
+import UpdateProjectDetails from "../Pages/Main/Projects/UpdateProjectDetails";
 
 const Router = createBrowserRouter([
   {
@@ -40,6 +41,7 @@ const Router = createBrowserRouter([
       { path: "company", element: <Company /> },
       { path: "view-project", element: <ViewProject /> },
       { path: "tasks-view-project", element: <TasksViewProject /> },
+      { path: "update-project-details", element: <UpdateProjectDetails /> },
     ],
   },
 

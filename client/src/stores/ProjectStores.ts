@@ -4,6 +4,7 @@ import {
   GetProjectByCompany,
   GetProjectDetails,
   GetProjectStats,
+  UpdateProjectDetails,
 } from "../services/project";
 
 interface ProjectState {
@@ -12,6 +13,7 @@ interface ProjectState {
   stats: any;
   loading: boolean;
   creating: boolean;
+  updating: boolean;
 
   setLoading: (loading: boolean) => void;
 
@@ -19,6 +21,7 @@ interface ProjectState {
   getProjectByCompany: (companyID: string) => Promise<any>;
   getProjectDetails: (projectID: string) => Promise<any>;
   getProjectStats: (companyID: string) => Promise<any>;
+  updateProjectDetails: (projectID: string, payload: any) => Promise<any>;
 }
 
 const useProjectStore = create<ProjectState>((set) => ({
@@ -27,6 +30,7 @@ const useProjectStore = create<ProjectState>((set) => ({
   stats: null,
   loading: false,
   creating: false,
+  updating: false,
 
   setLoading: (loading: boolean) => set({ loading }),
 
@@ -79,6 +83,29 @@ const useProjectStore = create<ProjectState>((set) => ({
       throw err.response?.data ?? err;
     } finally {
       set({ loading: false });
+    }
+  },
+
+  updateProjectDetails: async (projectID: string, payload: any) => {
+    try {
+      set({ updating: true });
+      const res = await UpdateProjectDetails(projectID, payload);
+      set((state) => ({
+        projectDetails: state.projectDetails
+          ? {
+              ...state.projectDetails,
+              project: { ...state.projectDetails.project, ...payload },
+            }
+          : state.projectDetails,
+        projects: state.projects.map((p) =>
+          p._id === projectID ? { ...p, ...payload } : p,
+        ),
+      }));
+      return res;
+    } catch (err: any) {
+      throw err.response?.data ?? err;
+    } finally {
+      set({ updating: false });
     }
   },
 }));

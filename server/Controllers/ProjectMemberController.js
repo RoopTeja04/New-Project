@@ -36,19 +36,23 @@ exports.RemoveMember = async (req, res) => {
   const { memberID, projectID } = req.params;
 
   try {
-    const FindMember = await ProjectMember.find({ _id: memberID, projectID });
+    const findMember = await ProjectMember.findOne({
+      _id: memberID,
+      projectID,
+    });
 
-    if (!FindMember)
+    if (!findMember) {
       return res.status(404).json({ message: "Member Not Found!" });
+    }
 
     await ProjectMember.findOneAndDelete({
-      _id: FindMember._id,
-      projectID: FindMember.projectID,
+      _id: memberID,
+      projectID,
     });
 
     return res
       .status(200)
-      .json({ message: "Member Removed form this project" });
+      .json({ message: "Project Member Removed Successfully" });
   } catch (err) {
     return res.status(500).json({
       message: "Internal Server Error",

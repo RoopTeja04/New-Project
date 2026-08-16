@@ -42,4 +42,18 @@ export const UpdateProjectStatus = async (projectID: string, status: string) => 
 
 export const DeleteProject = async (projectID: string) => {
   return await API.delete(`/${projectID}`);
+};
+
+interface UpdateProjectDetailsPayload {
+  name?: string;
+  description?: string;
+  techStack?: string[];
+  projectLink?: string;
 }
+
+export const UpdateProjectDetails = async (
+  projectID: string,
+  payload: UpdateProjectDetailsPayload,
+) => {
+  return await API.patch(`/update-details/${projectID}`, { payload });
+};
