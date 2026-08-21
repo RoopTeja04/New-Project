@@ -5,6 +5,7 @@ import About from "../Pages/Website/About";
 import Create from "../Components/AuthComponents/Create";
 import Login from "../Components/AuthComponents/Login";
 import Layout from "../Components/GlobalComponents/Layout";
+import ProtectedRoute from "../Components/GlobalComponents/ProtectedRoute";
 import Dashboard from "../Pages/Main/Dashboard/Dashboard";
 import Projects from "../Pages/Main/Projects/Projects";
 import AddProjects from "../Pages/Main/Projects/AddProjects";
@@ -31,17 +32,25 @@ const Router = createBrowserRouter([
 
   {
     path: "/dashboard",
-    element: <Layout />,
+    element: <ProtectedRoute />,
     children: [
-      { index: true, element: <Dashboard /> },
-      { path: "projects", element: <Projects /> },
-      { path: "add-projects", element: <AddProjects /> },
-      { path: "invites", element: <Invites /> },
-      { path: "invites-history", element: <InviteHistory /> },
-      { path: "company", element: <Company /> },
-      { path: "view-project", element: <ViewProject /> },
-      { path: "tasks-view-project", element: <TasksViewProject /> },
-      { path: "update-project-details", element: <UpdateProjectDetails /> },
+      {
+        element: <Layout />,
+        children: [
+          { index: true, element: <Dashboard /> },
+          { path: "projects", element: <Projects /> },
+          { path: "add-projects", element: <AddProjects /> },
+          { path: "invites", element: <Invites /> },
+          { path: "invites-history", element: <InviteHistory /> },
+          { path: "company", element: <Company /> },
+          { path: "view-project", element: <ViewProject /> },
+          { path: "tasks-view-project", element: <TasksViewProject /> },
+          {
+            path: "update-project-details",
+            element: <UpdateProjectDetails />,
+          },
+        ],
+      },
     ],
   },
 

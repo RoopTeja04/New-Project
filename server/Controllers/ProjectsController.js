@@ -235,7 +235,7 @@ exports.updateProjectDetails = async (req, res) => {
     const updatedProject = await Projects.findByIdAndUpdate(
       projectID,
       { $set: payload },
-      { new: true },
+      { returnDocument: "after" },
     );
 
     return res.status(200).json({
