@@ -107,7 +107,7 @@ exports.UpdateTaskColumn = async (req, res) => {
     await Tasks.findByIdAndUpdate(
       TaskID,
       { columnID, position: columns.length + 1 },
-      { new: true },
+      { returnDocument: "after" },
     );
 
     return res.status(200).json({ message: "Task moved successfully" });

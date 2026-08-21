@@ -41,7 +41,7 @@ exports.UpdateColumn = async (req, res) => {
           position: column.position,
           title: column.title,
         },
-        { new: true },
+        { returnDocument: "after" },
       );
     });
 

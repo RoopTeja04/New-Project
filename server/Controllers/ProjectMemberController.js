@@ -71,7 +71,11 @@ exports.UpdateMember = async (req, res) => {
     if (!FindMember)
       return res.status(404).json({ message: "Member Not Found!" });
 
-    await ProjectMember.findByIdAndUpdate(memberID, { role }, { new: true });
+    await ProjectMember.findByIdAndUpdate(
+      memberID,
+      { role },
+      { returnDocument: "after" },
+    );
 
     return res
       .status(200)

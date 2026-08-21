@@ -334,7 +334,7 @@ const ViewProject = () => {
         </div>
 
         <div className="flex flex-col gap-5 lg:flex-row">
-          <div className="flex w-full flex-col gap-3 rounded-xl border border-gray-700 bg-[#071225] p-5 lg:w-1/2">
+          <div className="flex w-full flex-col gap-3 h-80 rounded-xl border border-gray-700 bg-[#071225] p-5 lg:w-1/2">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">
                 Columns
@@ -344,7 +344,7 @@ const ViewProject = () => {
               </span>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto scrollbar-hide">
               {columns.map((column: any) => (
                 <div
                   key={column._id}
@@ -359,7 +359,7 @@ const ViewProject = () => {
             </div>
           </div>
 
-          <div className="flex w-full flex-col gap-3 rounded-xl border border-gray-700 bg-[#071225] p-5 lg:w-1/2">
+          <div className="flex w-full flex-col gap-3 h-80 rounded-xl border border-gray-700 bg-[#071225] p-5 lg:w-1/2">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">
                 Project Members
@@ -379,7 +379,7 @@ const ViewProject = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto scrollbar-hide">
               {members.length === 0 ? (
                 <div className="flex items-center justify-center h-40">
                   <p className="text-sm text-gray-400 text-center">
