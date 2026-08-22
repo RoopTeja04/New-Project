@@ -15,6 +15,13 @@ exports.AddMember = async (req, res) => {
     if (!FindProject)
       return res.status(404).json({ message: "Project Not Found!" });
 
+    const findDuplicate = await ProjectMember.find({ projectID, userID });
+
+    if (findDuplicate)
+      return res
+        .status(401)
+        .json({ message: "Member Already exists in this project" });
+
     await ProjectMember.create({
       projectID,
       userID,
