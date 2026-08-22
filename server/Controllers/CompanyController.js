@@ -32,7 +32,7 @@ exports.UpdateCompany = async (req, res) => {
     const UpdatedCompany = await Company.findOneAndUpdate(
       { ownerID: id },
       { $set: data },
-      { new: true },
+      { returnDocument: "after" },
     );
 
     return res.status(200).json({
