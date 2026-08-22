@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { IoChevronDown, IoCheckmark, IoClose } from "react-icons/io5";
 import { toast } from "react-toastify";
-import useAuthStore from "../../../stores/authStores";
-import useCompanyStore from "../../../stores/companyStores";
+import useAuthStore from "../../../../stores/authStores";
+import useCompanyStore from "../../../../stores/companyStores";
 
 const EditCompanyDetails = ({ companyData, setShowEditDetails }: any) => {
   const { userId } = useAuthStore();

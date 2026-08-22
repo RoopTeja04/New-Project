@@ -2,8 +2,8 @@ import { useState } from "react";
 import { FaGlobe } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-toastify";
-import useAuthStore from "../../../stores/authStores";
-import useCompanyStore from "../../../stores/companyStores";
+import useAuthStore from "../../../../stores/authStores";
+import useCompanyStore from "../../../../stores/companyStores";
 import AddSocialLink, { socialPlatforms } from "./AddSocialLink";
 
 const SocialMediaLinks = () => {
