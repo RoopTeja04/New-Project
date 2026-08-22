@@ -29,15 +29,16 @@ exports.UpdateCompany = async (req, res) => {
       return res.status(404).json({ message: "Company not found" });
     }
 
-    await Company.findOneAndUpdate(
+    const UpdatedCompany = await Company.findOneAndUpdate(
       { ownerID: id },
       { $set: data },
       { new: true },
     );
 
-    return res
-      .status(200)
-      .json({ messag: "Company Data Updated Successfully" });
+    return res.status(200).json({
+      message: "Company Data Updated Successfully",
+      UpdatedCompany,
+    });
   } catch (err) {
     return res
       .status(500)

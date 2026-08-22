@@ -1,5 +1,10 @@
 import axios from "axios";
 
+interface SocialLink {
+  platform: string;
+  url: string;
+}
+
 interface UpdateCompanyPayload {
   companyName?: string;
   website?: string;
@@ -7,6 +12,7 @@ interface UpdateCompanyPayload {
   industry?: string;
   companySize?: string;
   location?: string;
+  socialLinks?: SocialLink[];
 }
 
 const API = axios.create({

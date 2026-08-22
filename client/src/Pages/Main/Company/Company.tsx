@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { TfiWorld } from "react-icons/tfi";
 import { CiEdit } from "react-icons/ci";
 import EditCompanyDetails from "./EditCompanyDetails";
+import SocialMediaLinks from "./SocialMediaLinks";
 
 const Company = () => {
   const { companyData } = useCompanyStore();
@@ -103,20 +104,7 @@ const Company = () => {
           </div>
         </div>
 
-        <div className="border-[#2e3b51] border-2 p-4 rounded-lg">
-          <h1 className="text-lg font-medium tracking-wide p-2">
-            Social Links
-          </h1>
-
-          {companyData?.socialLinks?.length > 0 ? (
-            <div></div>
-          ) : (
-            <p className="text-center my-6 font-normal text-gray-500">
-              {" "}
-              - No Social Media Links Available -{" "}
-            </p>
-          )}
-        </div>
+        <SocialMediaLinks />
 
         <div className="border-red-500 bg-[#ddaaa5] border-2 p-6 rounded-lg">
           <h1 className="text-lg p-2 text-[#93000a] font-semibold">

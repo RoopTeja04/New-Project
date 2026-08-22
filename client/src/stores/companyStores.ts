@@ -37,11 +37,7 @@ const useCompanyStore = create<Company>((set) => ({
     try {
       set({ updating: true });
       const res = await UpdateCompany(id, payload);
-      set((state) => ({
-        companyData: state.companyData
-          ? { ...state.companyData, ...payload }
-          : state.companyData,
-      }));
+      set({ companyData: res.data.UpdatedCompany });
       return res;
     } catch (err: any) {
       throw err.response?.data ?? err;

@@ -33,19 +33,21 @@ const companySchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    socialLinks: {
-      platform: {
-        type: String,
-        required: true,
-        trim: true,
-      },
+    socialLinks: [
+      {
+        platform: {
+          type: String,
+          required: true,
+          trim: true,
+        },
 
-      url: {
-        type: String,
-        required: true,
-        trim: true,
+        url: {
+          type: String,
+          required: true,
+          trim: true,
+        },
       },
-    },
+    ],
     ownerID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
