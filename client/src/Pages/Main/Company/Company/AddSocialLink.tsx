@@ -10,8 +10,8 @@ import {
   FaGlobe,
 } from "react-icons/fa6";
 import { toast } from "react-toastify";
-import useAuthStore from "../../../stores/authStores";
-import useCompanyStore from "../../../stores/companyStores";
+import useAuthStore from "../../../../stores/authStores";
+import useCompanyStore from "../../../../stores/companyStores";
 
 export const socialPlatforms = [
   { name: "LinkedIn", icon: FaLinkedin, color: "text-blue-500" },

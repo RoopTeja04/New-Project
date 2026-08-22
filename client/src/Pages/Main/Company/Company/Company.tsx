@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CgOrganisation } from "react-icons/cg";
-import useCompanyStore from "../../../stores/companyStores";
+import useCompanyStore from "../../../../stores/companyStores";
 import { MdDeleteForever, MdOutlineCalendarToday } from "react-icons/md";
 import dayjs from "dayjs";
 import { TfiWorld } from "react-icons/tfi";
