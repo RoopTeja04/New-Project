@@ -117,3 +117,26 @@ exports.GetMember = async (req, res) => {
     });
   }
 };
+
+exports.GetProjectMembers = async (req, res) => {
+  const { projectID } = req.params;
+
+  try {
+    const FindMembers = await ProjectMember.find({ projectID });
+
+    if (FindMembers.length === 0) {
+      return res
+        .status(201)
+        .json({ message: "No Members are available in this project" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Project Members Found", FindMembers });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};

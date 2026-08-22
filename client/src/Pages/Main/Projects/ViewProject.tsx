@@ -367,12 +367,12 @@ const ViewProject = () => {
                   Add Column
                 </button>
                 <span className="text-xs text-gray-500">
-                  Total: {projectDetails?.TotalColumns ?? columns.length}
+                  {/* Total: {projectDetails?.TotalColumns ?? columns.length} */}
                 </span>
               </div>
             </div>
 
-            <div className="flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto scrollbar-hide">
+            {/* <div className="flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto scrollbar-hide">
               {columns.map((column: any) => (
                 <div
                   key={column._id}
@@ -384,7 +384,7 @@ const ViewProject = () => {
                   <span className="text-sm text-white">{column.title}</span>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
 
           <div className="flex w-full flex-col gap-3 h-80 rounded-xl border border-gray-700 bg-[#071225] p-5 lg:w-1/2">
@@ -402,13 +402,13 @@ const ViewProject = () => {
                   Add Member
                 </button>
                 <span className="text-xs text-gray-500">
-                  Total: {projectDetails?.TotalMembers.length ?? members.length}
+                  {/* Total: {projectDetails?.TotalMembers.length ?? members.length} */}
                 </span>
               </div>
             </div>
 
             <div className="flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto scrollbar-hide">
-              {members.length === 0 ? (
+              {/* {members.length === 0 ? (
                 <div className="flex items-center justify-center h-40">
                   <p className="text-sm text-gray-400 text-center">
                     No members in this project.
@@ -453,7 +453,7 @@ const ViewProject = () => {
                     </button>
                   </div>
                 ))
-              )}
+              )} */}
             </div>
           </div>
         </div>

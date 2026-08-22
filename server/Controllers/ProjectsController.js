@@ -80,19 +80,19 @@ exports.GetProjectDetails = async (req, res) => {
     if (!FindProject)
       return res.status(404).json({ message: "Project Not Found" });
 
-    const ProjectMembersDeatils = await ProjectMembers.find({
-      projectID,
-    }).populate("userID");
+    // const ProjectMembersDeatils = await ProjectMembers.find({
+    //   projectID,
+    // }).populate("userID");
 
-    const ColumnsDetails = await Columns.find({ projectID });
+    // const ColumnsDetails = await Columns.find({ projectID });
 
     return res.status(200).json({
       message: "Project Found Successfully",
       project: FindProject,
-      TotalMembers: ProjectMembersDeatils.length,
-      members: ProjectMembersDeatils,
-      TotalColumns: ColumnsDetails.length,
-      columns: ColumnsDetails,
+      // TotalMembers: ProjectMembersDeatils.length,
+      // members: ProjectMembersDeatils,
+      // TotalColumns: ColumnsDetails.length,
+      // columns: ColumnsDetails,
     });
   } catch (err) {
     return res.status(500).json({
