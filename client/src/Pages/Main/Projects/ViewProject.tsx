@@ -18,6 +18,7 @@ import {
 import { HiDotsVertical } from "react-icons/hi";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import useProjectStore from "../../../stores/ProjectStores";
 import useCompanyStore from "../../../stores/companyStores";
@@ -27,6 +28,7 @@ import { RxCross2 } from "react-icons/rx";
 import { DeleteProjectMemeber } from "../../../services/projectMember";
 import { BsThreeDots } from "react-icons/bs";
 import AddNewMember from "./AddNewMember";
+import useColumnStore from "../../../stores/ColumnStores";
 
 const STATUS_LIST = [
   {
@@ -75,6 +77,7 @@ const ViewProject = () => {
   const { companyData } = useCompanyStore();
   const { members: companyMembers, getCompanyMembers } =
     useCompanyMembersStore();
+  const { createColumn } = useColumnStore();
 
   const [showOptions, setShowOptions] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
@@ -82,6 +85,9 @@ const ViewProject = () => {
   const [deleteStatus, setDeleteStatus] = useState<boolean>(false);
   const [deleteMemberStatus, setDeleteMemberStatus] = useState<boolean>(false);
   const [addNewMember, setaddNewMember] = useState<boolean>(false);
+  const [showAddColumn, setShowAddColumn] = useState(false);
+  const [newColumnTitle, setNewColumnTitle] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (projectID) getProjectDetails(projectID);
@@ -158,6 +164,20 @@ const ViewProject = () => {
     } finally {
       setDeleteMemberStatus(false);
     }
+  };
+
+  const handleAddColumn = async () => {
+    if (!newColumnTitle.trim()) return setError("Column name is Required");
+
+    try {
+      await createColumn(projectID, newColumnTitle.trim());
+      setNewColumnTitle("");
+      setShowAddColumn(false);
+      await getProjectDetails(projectID);
+      toast.success("Column added successfully");
+    } catch (err: any) {
+      toast.error(err?.message || "Failed to add column");
+    } 
   };
 
   return (
@@ -339,9 +359,17 @@ const ViewProject = () => {
               <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">
                 Columns
               </h2>
-              <span className="text-xs text-gray-500">
-                Total: {projectDetails?.TotalColumns ?? columns.length}
-              </span>
+              <div className="flex items-center gap-2 space-x-2">
+                <button
+                  onClick={() => setShowAddColumn(true)}
+                  className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-green-700 cursor-pointer"
+                >
+                  Add Column
+                </button>
+                <span className="text-xs text-gray-500">
+                  Total: {projectDetails?.TotalColumns ?? columns.length}
+                </span>
+              </div>
             </div>
 
             <div className="flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto scrollbar-hide">
@@ -432,10 +460,68 @@ const ViewProject = () => {
       </div>
 
       {addNewMember && (
-        <AddNewMember
-          setAddNewMember={setaddNewMember}
-          projectID={projectID}
-        />
+        <AddNewMember setAddNewMember={setaddNewMember} projectID={projectID} />
+      )}
+
+      {showAddColumn && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md">
+          <div className="relative w-full max-w-md rounded-2xl border border-gray-700 bg-[#08111F] p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <div className="mb-6 flex items-center justify-between border-b border-gray-700 pb-4">
+              <h2 className="text-2xl font-semibold text-white">Add Column</h2>
+
+              <button
+                onClick={() => {
+                  setShowAddColumn(false);
+                  setNewColumnTitle("");
+                }}
+                className="cursor-pointer rounded-lg p-2 text-gray-400 transition hover:bg-gray-700 hover:text-white"
+              >
+                <IoClose size={24} />
+              </button>
+            </div>
+
+            <div className="flex w-full flex-col space-y-2">
+              <label className="font-bold text-gray-300">Column Title</label>
+              <input
+                autoFocus
+                type="text"
+                value={newColumnTitle}
+                onChange={(e) => {
+                  (setNewColumnTitle(e.target.value), setError(""));
+                }}
+                onKeyDown={(e) => e.key === "Enter" && handleAddColumn()}
+                placeholder="Enter column title"
+                className={`${error ? "border-red-500" : ""} w-full rounded-xl border border-gray-600 bg-transparent px-4 py-3 text-sm text-white outline-none transition focus:border-blue-500/60 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              />
+              {error && (
+                <span className="text-red-500 pt-2 text-base tracking-wide pl-0.5">
+                  {error}
+                </span>
+              )}
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3 border-t border-gray-700 pt-4">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAddColumn(false);
+                  setNewColumnTitle("");
+                }}
+                className="cursor-pointer rounded-lg border border-gray-600 px-4 py-2 text-sm font-medium text-gray-300 transition hover:bg-gray-700"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                onClick={handleAddColumn}
+                className="cursor-pointer rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

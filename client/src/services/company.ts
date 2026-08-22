@@ -1,5 +1,20 @@
 import axios from "axios";
 
+interface SocialLink {
+  platform: string;
+  url: string;
+}
+
+interface UpdateCompanyPayload {
+  companyName?: string;
+  website?: string;
+  description?: string;
+  industry?: string;
+  companySize?: string;
+  location?: string;
+  socialLinks?: SocialLink[];
+}
+
 const API = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_API + "/company",
   withCredentials: true,
@@ -7,4 +22,8 @@ const API = axios.create({
 
 export const GetCompany = async (id: string) => {
   return await API.get(`/${id}`);
+};
+
+export const UpdateCompany = async (id: string, data: UpdateCompanyPayload) => {
+  return await API.put(`/${id}`, { data });
 };
