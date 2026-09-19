@@ -10,7 +10,7 @@ import useProjectMemberStore from "../../../stores/ProjectMembersStroes";
 const AddNewMember = ({ projectID, setAddNewMember }: any) => {
   const navigate = useNavigate();
   const { members } = useCompanyMembersStore();
-  const { addProjectMember } = useProjectMemberStore();
+  const { addProjectMember, getProjectMember } = useProjectMemberStore();
 
   const roles = [
     "Designer",
@@ -63,6 +63,7 @@ const AddNewMember = ({ projectID, setAddNewMember }: any) => {
       toast.error(err?.response?.data?.message || "Failed to add member");
     } finally {
       setLoading(false);
+      getProjectMember(projectID);
     }
   };
 

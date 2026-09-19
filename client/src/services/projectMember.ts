@@ -15,3 +15,7 @@ export const DeleteProjectMemeber = async (
 ) => {
   return await API.delete(`/${memberID}/${projectID}`);
 };
+
+export const GetProjectMembers = async (projectID: string) => {
+  return await API.get(`/members/${projectID}`);
+}

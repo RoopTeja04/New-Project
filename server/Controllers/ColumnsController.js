@@ -102,3 +102,23 @@ exports.DeleteColumn = async (req, res) => {
     });
   }
 };
+
+exports.GetColumns = async (req, res) => {
+  const { projectID } = req.params;
+
+  try {
+    if (!projectID)
+      return res.status(400).json({ message: "ProjectID is required" });
+
+    const foundColumns = await Columns.find({ projectID });
+
+    return res
+      .status(200)
+      .json({ message: "Columns found Successfully", foundColumns });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};
