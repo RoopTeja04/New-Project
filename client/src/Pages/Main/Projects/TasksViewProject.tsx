@@ -20,9 +20,9 @@ import useAuthStore from "../../../stores/authStores";
 const PRIORITY_OPTIONS = ["LOW", "MEDIUM", "HIGH"];
 
 const PRIORITY_STYLES: Record<string, string> = {
-  LOW: "bg-green-500/10 text-green-400",
-  MEDIUM: "bg-yellow-500/10 text-yellow-400",
-  HIGH: "bg-red-500/10 text-red-400",
+  LOW: "bg-green-500 text-gray-800",
+  MEDIUM: "bg-yellow-500 text-gray-800",
+  HIGH: "bg-red-500 text-gray-800",
 };
 
 const TasksViewProject = () => {
@@ -324,10 +324,19 @@ const TasksViewProject = () => {
                                             : ""
                                         }`}
                                       >
+                                        <span
+                                          className={`rounded-full px-2 py-0.5 w-fit text-[10px] mb-2 font-medium ${
+                                            PRIORITY_STYLES[task.priority] ||
+                                            "bg-green-700 text-gray-400"
+                                          }`}
+                                        >
+                                          {task.priority}
+                                        </span>
                                         <div className="flex items-start justify-between gap-2">
                                           <p className="text-sm font-medium text-white">
                                             {task.title}
                                           </p>
+
                                           <button
                                             type="button"
                                             onClick={() =>
@@ -349,28 +358,44 @@ const TasksViewProject = () => {
                                         )}
 
                                         <div className="flex items-center justify-between pt-1">
-                                          <span
-                                            className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                                              PRIORITY_STYLES[task.priority] ||
-                                              "bg-gray-500/10 text-gray-400"
-                                            }`}
-                                          >
-                                            {task.priority}
-                                          </span>
+                                          <div className="flex-1 space-y-2">
+                                            <h1 className="text-sm font-light text-gray-400">
+                                              Assigned to
+                                            </h1>
+                                            <div className="flex items-center gap-1.5">
+                                              {task.assigneedID?.avatar ? (
+                                                <img
+                                                  src={task.assigneedID.avatar}
+                                                  alt={task.assigneedID.name}
+                                                  className="h-5 w-5 rounded-full object-cover"
+                                                />
+                                              ) : (
+                                                <FaRegCircleUser className="h-5 w-5 text-gray-500" />
+                                              )}
+                                              <span className="text-[11px] text-gray-300">
+                                                {task.assigneedID?.name}
+                                              </span>
+                                            </div>
+                                          </div>
 
-                                          <div className="flex items-center gap-1.5">
-                                            {task.assigneedID?.avatar ? (
-                                              <img
-                                                src={task.assigneedID.avatar}
-                                                alt={task.assigneedID.name}
-                                                className="h-5 w-5 rounded-full object-cover"
-                                              />
-                                            ) : (
-                                              <FaRegCircleUser className="h-5 w-5 text-gray-500" />
-                                            )}
-                                            <span className="text-[11px] text-gray-400">
-                                              {task.assigneedID?.name}
-                                            </span>
+                                          <div className="flex-1 space-y-2">
+                                            <h1 className="text-sm font-light text-gray-400">
+                                              Created by
+                                            </h1>
+                                            <div className="flex items-center gap-1.5">
+                                              {task.createdUser?.avatar ? (
+                                                <img
+                                                  src={task.createdUser.avatar}
+                                                  alt={task.createdUser.name}
+                                                  className="h-5 w-5 rounded-full object-cover"
+                                                />
+                                              ) : (
+                                                <FaRegCircleUser className="h-5 w-5 text-gray-500" />
+                                              )}
+                                              <span className="text-[11px] text-gray-400">
+                                                {task.createdUser?.name}
+                                              </span>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
