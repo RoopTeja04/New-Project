@@ -3,6 +3,7 @@ import {
   CreateColumn,
   DeleteColumn,
   UpdateColumnPositions,
+  GetColumnsByProjectID,
 } from "../services/column";
 
 interface ColumnState {
@@ -14,6 +15,7 @@ interface ColumnState {
   createColumn: (projectID: string, title: string) => Promise<any>;
   reorderColumns: (columns: any[]) => Promise<any>;
   deleteColumn: (id: string) => Promise<any>;
+  getColumns: (projectID: string) => Promise<any>;
 }
 
 const useColumnStore = create<ColumnState>((set, get) => ({
@@ -62,6 +64,19 @@ const useColumnStore = create<ColumnState>((set, get) => ({
       return res;
     } catch (err: any) {
       set({ columns: previous });
+      throw err.response?.data ?? err;
+    }
+  },
+
+  getColumns: async (projectID) => {
+    try {
+      const res = await GetColumnsByProjectID(projectID);
+      const sorted = [...(res.data?.foundColumns ?? [])].sort(
+        (a: any, b: any) => a.position - b.position,
+      );
+      set({ columns: sorted });
+      return res;
+    } catch (err: any) {
       throw err.response?.data ?? err;
     }
   },

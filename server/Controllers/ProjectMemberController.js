@@ -122,7 +122,7 @@ exports.GetProjectMembers = async (req, res) => {
   const { projectID } = req.params;
 
   try {
-    const FindMembers = await ProjectMember.find({ projectID });
+    const FindMembers = await ProjectMember.find({ projectID }).populate("userID", "-password");
 
     if (FindMembers.length === 0) {
       return res

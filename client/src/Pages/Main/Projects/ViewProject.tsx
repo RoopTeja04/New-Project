@@ -29,6 +29,7 @@ import { DeleteProjectMemeber } from "../../../services/projectMember";
 import { BsThreeDots } from "react-icons/bs";
 import AddNewMember from "./AddNewMember";
 import useColumnStore from "../../../stores/ColumnStores";
+import useProjectMemberStore from "../../../stores/ProjectMembersStroes";
 
 const STATUS_LIST = [
   {
@@ -77,7 +78,9 @@ const ViewProject = () => {
   const { companyData } = useCompanyStore();
   const { members: companyMembers, getCompanyMembers } =
     useCompanyMembersStore();
-  const { createColumn } = useColumnStore();
+  const { createColumn, getColumns, columns } = useColumnStore();
+  const { getProjectMember: getProjectMembers, projectMembers } =
+    useProjectMemberStore();
 
   const [showOptions, setShowOptions] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
@@ -97,16 +100,29 @@ const ViewProject = () => {
     if (companyData?._id) getCompanyMembers(companyData._id);
   }, [companyData?._id]);
 
-  const project = projectDetails?.project;
+  useEffect(() => {
+    if (projectID) getColumns(projectID);
+  }, [projectID]);
 
-  const columns = [...(projectDetails?.columns || [])].sort(
-    (a: any, b: any) => a.position - b.position,
-  );
+  const project = projectDetails?.project;
 
   const members = projectDetails?.members || [];
 
   const getDesignation = (userID: string) =>
     companyMembers.find((cm) => cm.userID?._id === userID)?.designation || "—";
+
+  useEffect(() => {
+    if (!projectID) return;
+
+    const fecthProjectMembers = async () => {
+      try {
+        await getProjectMembers(projectID);
+      } catch (error) {
+        console.error("Error fetching project members:", error);
+      }
+    };
+    fecthProjectMembers();
+  }, [projectID]);
 
   if (!project) {
     return (
@@ -173,11 +189,12 @@ const ViewProject = () => {
       await createColumn(projectID, newColumnTitle.trim());
       setNewColumnTitle("");
       setShowAddColumn(false);
-      await getProjectDetails(projectID);
+      await getColumns(projectID);
       toast.success("Column added successfully");
+      getColumns(projectID);
     } catch (err: any) {
       toast.error(err?.message || "Failed to add column");
-    } 
+    }
   };
 
   return (
@@ -367,24 +384,32 @@ const ViewProject = () => {
                   Add Column
                 </button>
                 <span className="text-xs text-gray-500">
-                  {/* Total: {projectDetails?.TotalColumns ?? columns.length} */}
+                  Total: {columns.length}
                 </span>
               </div>
             </div>
 
-            {/* <div className="flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto scrollbar-hide">
-              {columns.map((column: any) => (
-                <div
-                  key={column._id}
-                  className="flex items-center gap-3 rounded-lg border border-gray-800 bg-[#08162B] px-4 py-2.5"
-                >
-                  <span className="text-sm font-semibold text-blue-400">
-                    {column.position}.
-                  </span>
-                  <span className="text-sm text-white">{column.title}</span>
+            <div className="flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto scrollbar-hide">
+              {columns.length === 0 ? (
+                <div className="flex items-center justify-center h-40">
+                  <p className="text-sm text-gray-400 text-center">
+                    No columns yet. Add one to get started.
+                  </p>
                 </div>
-              ))}
-            </div> */}
+              ) : (
+                columns.map((column: any) => (
+                  <div
+                    key={column._id}
+                    className="flex items-center gap-3 rounded-lg border border-gray-800 bg-[#08162B] px-4 py-2.5"
+                  >
+                    <span className="text-sm font-semibold text-blue-400">
+                      {column.position}.
+                    </span>
+                    <span className="text-sm text-white">{column.title}</span>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
 
           <div className="flex w-full flex-col gap-3 h-80 rounded-xl border border-gray-700 bg-[#071225] p-5 lg:w-1/2">
@@ -402,20 +427,20 @@ const ViewProject = () => {
                   Add Member
                 </button>
                 <span className="text-xs text-gray-500">
-                  {/* Total: {projectDetails?.TotalMembers.length ?? members.length} */}
+                  Total: {projectMembers.length}
                 </span>
               </div>
             </div>
 
             <div className="flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto scrollbar-hide">
-              {/* {members.length === 0 ? (
+              {projectMembers.length === 0 ? (
                 <div className="flex items-center justify-center h-40">
                   <p className="text-sm text-gray-400 text-center">
                     No members in this project.
                   </p>
                 </div>
               ) : (
-                members.map((member: any) => (
+                projectMembers.map((member: any) => (
                   <div
                     key={member._id}
                     className="flex items-center gap-3 rounded-lg border border-gray-800 bg-[#08162B] px-4 py-2.5"
@@ -453,7 +478,7 @@ const ViewProject = () => {
                     </button>
                   </div>
                 ))
-              )} */}
+              )}
             </div>
           </div>
         </div>

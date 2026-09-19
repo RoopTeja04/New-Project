@@ -29,3 +29,7 @@ export const UpdateColumnPositions = async (
 export const DeleteColumn = async (id: string) => {
   return await API.delete(`/${id}`);
 };
+
+export const GetColumnsByProjectID = async (projectID: string) => {
+  return await API.get(`/${projectID}`);
+};
