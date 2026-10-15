@@ -1,5 +1,12 @@
 const express = require("express");
-const { CreateAccount, Login, CheckSession } = require("../Controllers/UserController");
+
+module.exports = UserRoutes;
+const express = require("express");
+const {
+  CreateAccount,
+  Login,
+  CheckSession,
+} = require("../Controllers/UserController");
 
 const UserRoutes = express.Router();
 
